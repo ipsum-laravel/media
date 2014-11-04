@@ -1,0 +1,33 @@
+{
+    "name": "ipsum/media",
+    "description": "",
+    "authors": [
+        {
+            "name": "B1nj",
+            "email": "postmaster@b1nj.fr"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "ipsum/admin": "1.0.*"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/ipsum-laravel/admin.git"
+        },
+        {
+            "type": "vcs",
+            "url":  "https://github.com/ipsum-laravel/core.git"
+        }
+    ],
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-4": {
+            "Ipsum\\Media\\": "src"
+        }
+    },
+    "minimum-stability": "stable"
+}
