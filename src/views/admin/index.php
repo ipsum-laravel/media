@@ -74,9 +74,9 @@
                     <td><?= e($media->repertoire) ?></td>
                     <td><?= e($media->type) ?></td>
                     <td class="center">
-                        <a href="<?= e($media->url) ?>">
-                            <?php if ($media->image) : ?>
-                            <img src="<?= Croppa::url('/'.$media->image, 150, 150) ?>" alt="" />
+                        <a href="<?= asset($media->path) ?>">
+                            <?php if ($media->isImage()) : ?>
+                            <img src="<?= Croppa::url('/'.$media->path, 150, 150) ?>" alt="" />
                             <?php else : ?>
                             <img src="<?= asset('packages/ipsum/media/img/'.$media->icone) ?>" alt="<?= e($media->type) ?>" />
                             <?php endif ?>

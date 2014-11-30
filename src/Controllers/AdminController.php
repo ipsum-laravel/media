@@ -26,8 +26,6 @@ class AdminController extends \Ipsum\Admin\Controllers\BaseController {
 
     public function index()
     {
-        $medias = array();
-
         $requete = Media::select('*');
         $liste = Liste::setRequete($requete);
         $filtres = array(
@@ -67,16 +65,7 @@ class AdminController extends \Ipsum\Admin\Controllers\BaseController {
         );
         Liste::setTris($tris);
 
-        foreach(Liste::rechercherLignes() as $item) {
-            $repertoire = !empty($item->repertoire) ? $item->repertoire.'/' : '';
-            $chemin = File::find(Config::get('IpsumMedia::path').$repertoire.$item->fichier, null, true);
-            if ($item->type == 'image') {
-                $item->image = $chemin;
-            }
-            $item->url = asset($chemin);
-            $item->icone = Config::has('IpsumMedia::types.'.$item->type.'.icone') ? Config::get('IpsumMedia::types.'.$item->type.'.icone') : 'default.png';
-            $medias[] = $item;
-        }
+        $medias = Liste::rechercherLignes();
 
         $types[''] = '----- Type ------';
         foreach (Config::get('IpsumMedia::types') as $type) {
@@ -168,14 +157,12 @@ class AdminController extends \Ipsum\Admin\Controllers\BaseController {
                     }
 
                     // Eléments nécessaire pour affichage ajax
-                    $chemin = Config::get('IpsumMedia::path').$repertoire.$filename;
-                    if ($type == 'image') {
-                        $media->image = Croppa::url('/'.$chemin, 150, 150);
+                    if ($media->isImage()) {
+                        $media->image = Croppa::url('/'.$media->path, 150, 150);
                     }
-                    $media->url = asset($chemin);
+                    $media->url = asset($media->path);
                     $media->date = $media->created_at->format('d/m/Y');
-                    $media->icone = Config::has('IpsumMedia::types.'.$type.'.icone') ? Config::get('IpsumMedia::types.'.$type.'.icone') : 'default.png';
-
+                    $media->icone = $media->icone;
                     $medias[] = $media;
 
                     $succes[] = "Le média ".$file->getClientOriginalName()." a bien été téléchargé";
